@@ -1,5 +1,4 @@
 import { ChatGoogleGenerativeAI } from "@langchain/google-genai";
-import type { MessagesAnnotation } from "@langchain/langgraph";
 import { z } from "zod";
 
 //Timeline schema
@@ -20,10 +19,15 @@ const TimelineResponseSchema = z.object({
   events: z.array(TimelineEventSchema),
 });
 
+const gemini_key  = process.env.GEMINI_API_KEY
+if(!gemini_key){
+    throw new Error("gemini key not provided")
+}
+
 // Init the LLM
 const llm = new ChatGoogleGenerativeAI({
   model: "gemini-2.5-flash",
-  apiKey: process.env.GEMINI_API_KEY,
+  apiKey: gemini_key,
 });
 
 const structuredLLM = llm.withStructuredOutput(TimelineResponseSchema);
@@ -45,5 +49,5 @@ For each event provide: year, title, description, sentiment, impact score (0-100
   }
 };
 
-//
+//for testing only
 generateTimeline("How did Virat Kohli become what he is today");
