@@ -95,4 +95,4 @@ For imageUrl, provide a specific descriptive search query that will help find re
   }
 };
 
-generateTimeline("Einstien scientist journey");
+generateTimeline("Einstein scientist journey");
