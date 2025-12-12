@@ -66,7 +66,7 @@ const getImageUrl = async (query: string) => {
 
 
 
-const generateTimeline = async (query: string) => {
+export const generateTimeline = async (query: string) => {
   try {
     const prompt = `Generate a timeline for: "${query}"
 Include:
@@ -95,4 +95,3 @@ For imageUrl, provide a specific descriptive search query that will help find re
   }
 };
 
-generateTimeline("Einstein scientist journey");

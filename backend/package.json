@@ -1,14 +1,16 @@
 {
   "name": "backend",
-  "module": "index.ts",
+  "module": "server.ts",
   "type": "module",
   "private": true,
   "scripts": {
     "dev": "nodemon",
-    "start": "bun run src/index.ts"
+    "start": "bun run src/server.ts"
   },
   "devDependencies": {
     "@types/bun": "latest",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
     "nodemon": "^3.1.11"
   },
   "peerDependencies": {
@@ -19,6 +21,8 @@
     "@langchain/google-genai": "^2.0.4",
     "@langchain/langgraph": "^1.0.4",
     "@tavily/core": "^0.6.0",
+    "cors": "^2.8.5",
+    "express": "^5.2.1",
     "langchain": "^1.1.5",
     "zod": "^4.1.13"
   }
