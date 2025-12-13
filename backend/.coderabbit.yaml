@@ -1,3 +1,65 @@
 profile: "chill"
+
+# Files and paths to review
 path_filters:
   - "!dist/**"
+  - "!node_modules/**"
+  - "!build/**"
+  - "!pnpm-lock.yaml"
+  - "!.env*"
+  - "src/**/*.ts"
+  - "src/**/*.js"
+  
+
+# Specific instructions for key files
+path_instructions:
+  - path: "src/index.ts"
+    instructions: |
+      - Focus on LLM integration, schema validation, and timeline generation logic
+      - Check for proper error handling in async functions
+      - Verify environment variable validation
+      - Ensure structured output schemas are well-defined
+      - Review Tavily API integration for image fetching
+      - Check intent classification logic
+
+  - path: "src/server.ts"
+    instructions: |
+      - Review Express route handlers and middleware
+      - Check CORS configuration
+      - Verify request validation and sanitization
+      - Ensure proper error responses with status codes
+      - Review API endpoint structure and response format
+      - Check for security best practices (rate limiting, input validation)
+
+  - path: "**/*.ts"
+    instructions: |
+      - Enforce TypeScript best practices
+      - Check for proper type definitions
+      - Avoid 'any' types where possible
+      - Verify async/await error handling
+      - Check for memory leaks in async operations
+
+# Review settings
+reviews:
+  high_level_summary: true
+  poem: true
+  review_status: true
+  collapse_walkthrough: false
+  sequence_diagrams: false
+  auto_review:
+    enabled: true
+    drafts: false
+  tools:
+    shellcheck:
+      enabled: true
+    markdownlint:
+      enabled: true
+
+# Language settings
+language: en-US
+
+# Early access features
+early_access: false
+
+# Enable auto-reviews
+enable_free_tier: true
