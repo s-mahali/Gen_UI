@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { generateTimeline } from ".";
+import { generateTimeline } from "./index";
 
 const app = express();
 
