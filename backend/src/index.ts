@@ -16,6 +16,13 @@ const TimelineEventSchema = z.object({
   imageUrl: z.string().describe("URL for event image"),
 });
 
+//streaming callback type
+type StreamCallback = (event: {
+  type: "intent" | "timeline" | "image" | "event" | "chat" | "error";
+  data?: any;
+  message?: string;
+}) => void;
+
 const TimelineResponseSchema = z.object({
   entity: z.string(),
   events: z.array(TimelineEventSchema),
@@ -76,7 +83,7 @@ const getImageUrl = async (query: string) => {
 // Classify user intent
 const classifyIntent = async (query: string) => {
   // Basic sanitization to prevent prompt manipulation
-  const sanitizedQuery = query.replace(/["\n\r]/g, ' ').slice(0, 500);
+  const sanitizedQuery = query.replace(/["\n\r]/g, " ").slice(0, 500);
   const prompt = `Analyze this user query and determine the intent:
 Query: "${sanitizedQuery}"
 
@@ -93,7 +100,6 @@ Examples:
 - "What can you do?" → general_chat
 - current date is ${new Date().toISOString()}
 `;
-
 
   const result = await intentLLM.invoke(prompt);
   console.log("🎯 Intent:", result);
@@ -132,7 +138,7 @@ Respond naturally and mention that you can help create timelines for people, com
 Keep it brief and friendly.`;
 
   const response = await llm.invoke(prompt);
-  console.log("content",response.content)
+  console.log("content", response.content);
   return {
     type: "chat",
     message: response.content,
@@ -159,6 +165,76 @@ export const generateTimeline = async (query: string) => {
     }
   } catch (error) {
     console.error("❌ Error:", error);
+    throw error;
+  }
+};
+
+//stream timeline generation with progress updates
+export const generateTimelineStream = async (
+  query: string,
+  callback: StreamCallback
+) => {
+  try {
+    //classify intent
+    callback({ type: "intent", message: "Classifying intent..." });
+    const intent = await classifyIntent(query);
+    callback({ type: "intent", data: intent });
+
+    //Route based on intent
+    if (intent.intent === "timeline") {
+      callback({ type: "timeline", message: "Generating timeline events..." });
+      const prompt = `Generate a timeline for: "${query}"
+Include:
+- 5-6 historical events (past milestones, successes, failures)
+- 2-3 future predictions (realistic extrapolations)
+
+For each event provide: year, title, description, sentiment, impact score (0-100), market value if applicable, and relevant tags.
+For imageUrl, provide a specific descriptive search query that will help find relevant images (e.g., "Virat Kohli 2011 World Cup", "Nokia 3310 phone", "5G technology future").
+`;
+
+      const result = await structuredLLM.invoke(prompt);
+      callback({
+        type: "timeline",
+        data: { entity: result.entity, eventCount: result.events.length },
+      });
+
+      //fetch images one by one and stream progess
+      const enhancedEvents = [];
+      for (let i = 0; i < result.events.length; i++) {
+        const event = result.events[i];
+        callback({
+          type: "image",
+          message: `Fetching image ${i + 1}/${result.events.length}...`,
+        });
+        const imageUrl = await getImageUrl(event?.imageUrl  || event?.title as string);
+        const enhancedEvent = { ...event, imageUrl };
+        enhancedEvents.push(enhancedEvent);
+
+        //stream each event as it's ready
+        callback({
+          type: "event",
+          data: enhancedEvent,
+        });
+      }
+
+      callback({
+        type: "timeline",
+        data: {
+          type: "timeline",
+          data: { ...result, events: enhancedEvents },
+        },
+      });
+    } else {
+      callback({ type: "chat", message: "Generating response..." });
+      const chat = await handleGeneralChat(query);
+      callback({ type: "chat", data: chat });
+    }
+  } catch (error) {
+    console.error("❌ Stream Error:", error);
+    callback({
+      type: "error",
+      message: "Failed to generate timeline",
+    });
     throw error;
   }
 };

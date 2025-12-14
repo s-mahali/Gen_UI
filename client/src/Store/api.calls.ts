@@ -4,7 +4,7 @@ import {create} from "zustand";
 import axios from "axios";
 
 let axiosInstace = axios.create({
-    baseURL : "http://localhost:5000",
+    baseURL : import.meta.env.PROD ? "" : "http://localhost:5000",
     withCredentials : false
 })
 
