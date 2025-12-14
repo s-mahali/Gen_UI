@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { generateTimeline } from "./index";
+import { generateTimeline, generateTimelineStream } from "./index";
 
 const app = express();
 
@@ -16,6 +16,7 @@ app.get("/health", (req, res) => {
   });
 });
 
+//keep for backup
 app.post("/chat", async (req, res) => {
   const query: string = typeof req.body?.query === 'string' ? req.body.query.trim() : "";
 
@@ -50,6 +51,48 @@ app.post("/chat", async (req, res) => {
       message: "❌ Internal server error",
       success: false,
     });
+  }
+});
+
+// SSE endpoint for streaming timeline generation
+app.get("/chat/stream", async (req, res) => {
+  const query: string = typeof req.query?.query === 'string' ? req.query.query.trim() : "";
+
+  console.log("SSE Query:", query);
+
+  if (!query) {
+    res.status(400).json({
+      payload: null,
+      message: "Query is required",
+      success: false,
+    });
+    return;
+  }
+
+  // Set SSE headers
+  res.setHeader('Content-Type', 'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection', 'keep-alive');
+
+  try {
+    // Send initial event
+    res.write(`data: ${JSON.stringify({ type: 'start', message: 'Analyzing your query...' })}\n\n`);
+
+    // Stream timeline generation
+    await generateTimelineStream(query, (event) => {
+      res.write(`data: ${JSON.stringify(event)}\n\n`);
+    });
+
+    // Send completion event
+    res.write(`data: ${JSON.stringify({ type: 'done' })}\n\n`);
+    res.end();
+  } catch (error) {
+    console.log("❌ SSE error:", error);
+    res.write(`data: ${JSON.stringify({ 
+      type: 'error', 
+      message: 'Internal server error' 
+    })}\n\n`);
+    res.end();
   }
 });
 
