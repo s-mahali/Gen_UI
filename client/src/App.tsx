@@ -1,5 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Search, Loader2, ShipWheel, History, TrendingUp, MessageSquare } from "lucide-react";
+import {
+  Search,
+  Loader2,
+  ShipWheel,
+  History,
+  TrendingUp,
+  MessageSquare,
+} from "lucide-react";
 import type { TimelineEvent } from "./types/types";
 import { AI_DATA } from "./sample/dummydata";
 import { TimelineCarousel } from "./Component/TimelineCarousel";
@@ -18,16 +25,37 @@ export default function App() {
   //start with dummy data for better UX
   const [activeData, setActiveData] = useState<TimelineEvent[]>(AI_DATA);
   const [topic, setTopic] = useState("Rise of Artificial Intelligence");
-  
+
   // State for Streaming
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState("");
   const [chatResponse, setChatResponse] = useState(""); // For non-timeline answers
   const [isChatMode, setIsChatMode] = useState(false);
-  
+
   const debounceTimerRef = useRef<number | null>(null);
   const eventSourceRef = useRef<EventSource | null>(null);
   const isSearchingRef = useRef(false);
+  const baseUrl = import.meta.env.PROD ? "" : "http://localhost:5000"
+
+  //call healthcheck on every 14 min
+  const fetchHealthCheck = async () => {
+    await fetch(`${baseUrl}/health`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+  };
+
+  useEffect(() => {
+    fetchHealthCheck();
+    const healthCheckInterval = setInterval(() => {
+      fetchHealthCheck();
+    }, 14 * 60 * 1000);
+    return () => {
+      clearInterval(healthCheckInterval);
+    };
+  });
 
   // Cleanup on unmount
   useEffect(() => {
@@ -68,12 +96,14 @@ export default function App() {
     setProgress("Initializing connection...");
     setChatResponse("");
     setIsChatMode(false);
-    
+
     // We clear data immediately to show we are working on new stuff
-    setActiveData([]); 
+    setActiveData([]);
 
     const eventSource = new EventSource(
-      `http://localhost:5000/chat/stream?query=${encodeURIComponent(searchQuery)}`
+      `${baseUrl}/chat/stream?query=${encodeURIComponent(
+        searchQuery
+      )}`
     );
     eventSourceRef.current = eventSource;
 
@@ -84,7 +114,7 @@ export default function App() {
         case "start":
           setProgress("Analyzing your request...");
           break;
-        
+
         case "intent":
           setProgress("Understanding intent...");
           break;
@@ -92,7 +122,7 @@ export default function App() {
         case "timeline":
           // Metadata about the timeline (e.g. entity name)
           if (parsedData.data?.entity) {
-             setTopic(parsedData.data.entity);
+            setTopic(parsedData.data.entity);
           }
           setProgress("Structuring timeline...");
           break;
@@ -106,7 +136,7 @@ export default function App() {
           //Append new event to existing list
           setActiveData((prev) => {
             // Avoid duplicates just in case
-            if (prev.find(e => e.id === parsedData.data.id)) return prev;
+            if (prev.find((e) => e.id === parsedData.data.id)) return prev;
             return [...prev, parsedData.data];
           });
           break;
@@ -196,7 +226,7 @@ export default function App() {
         </div>
 
         {/* Prompt Badges (Hidden while loading to reduce clutter) */}
-        {!loading  && (
+        {!loading && (
           <div className="mt-6 w-full max-w-4xl flex flex-col items-center gap-3 animate-fade-in">
             <div className="flex flex-wrap items-center justify-center gap-2">
               <span className="text-xs font-semibold text-slate-400 uppercase tracking-wider mr-2">
@@ -231,48 +261,53 @@ export default function App() {
 
       {/* Main Content Area */}
       <div className="flex-1 relative z-10 flex flex-col justify-center min-h-[600px]">
-        
         {/* Loading State */}
         {loading && activeData.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full gap-4">
             <div className="relative">
-                <div className="absolute inset-0 bg-blue-500 blur-xl opacity-20 animate-pulse"></div>
-                <Loader2 className="w-12 h-12 animate-spin text-blue-600 relative z-10" />
+              <div className="absolute inset-0 bg-blue-500 blur-xl opacity-20 animate-pulse"></div>
+              <Loader2 className="w-12 h-12 animate-spin text-blue-600 relative z-10" />
             </div>
             <div className="flex flex-col items-center gap-1">
-                <p className="text-slate-800 font-medium text-lg animate-pulse">
+              <p className="text-slate-800 font-medium text-lg animate-pulse">
                 {progress || "Initializing..."}
-                </p>
-                <p className="text-slate-400 text-sm">This might take a moment as we gather sources.</p>
+              </p>
+              <p className="text-slate-400 text-sm">
+                This might take a moment as we gather sources.
+              </p>
             </div>
           </div>
         ) : isChatMode ? (
-            /* Chat Mode View */
-            <div className="flex items-center justify-center h-full px-4">
-                <div className="max-w-2xl bg-white p-8 rounded-3xl shadow-xl border border-slate-100 flex gap-6 items-start animate-fade-in-up">
-                    <div className="p-3 bg-blue-50 rounded-2xl">
-                        <MessageSquare className="w-8 h-8 text-blue-600" />
-                    </div>
-                    <div>
-                        <h3 className="text-lg font-bold text-slate-900 mb-2">AI Response</h3>
-                        <p className="text-slate-600 leading-relaxed text-lg">
-                            {chatResponse}
-                        </p>
-                    </div>
-                </div>
+          /* Chat Mode View */
+          <div className="flex items-center justify-center h-full px-4">
+            <div className="max-w-2xl bg-white p-8 rounded-3xl shadow-xl border border-slate-100 flex gap-6 items-start animate-fade-in-up">
+              <div className="p-3 bg-blue-50 rounded-2xl">
+                <MessageSquare className="w-8 h-8 text-blue-600" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-slate-900 mb-2">
+                  AI Response
+                </h3>
+                <p className="text-slate-600 leading-relaxed text-lg">
+                  {chatResponse}
+                </p>
+              </div>
             </div>
+          </div>
         ) : (
-            /* Timeline View */
-             <div className="relative w-full h-full">
-                {/* Streaming Indicator (if still loading but we have some data) */}
-                {loading && (
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 z-40 bg-white/80 backdrop-blur-md px-4 py-1 rounded-full border border-blue-100 shadow-lg flex items-center gap-2">
-                        <Loader2 className="w-3 h-3 animate-spin text-blue-600" />
-                        <span className="text-xs font-bold text-blue-600">{progress}</span>
-                    </div>
-                )}
-                <TimelineCarousel events={activeData} />
-             </div>
+          /* Timeline View */
+          <div className="relative w-full h-full">
+            {/* Streaming Indicator (if still loading but we have some data) */}
+            {loading && (
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 z-40 bg-white/80 backdrop-blur-md px-4 py-1 rounded-full border border-blue-100 shadow-lg flex items-center gap-2">
+                <Loader2 className="w-3 h-3 animate-spin text-blue-600" />
+                <span className="text-xs font-bold text-blue-600">
+                  {progress}
+                </span>
+              </div>
+            )}
+            <TimelineCarousel events={activeData} />
+          </div>
         )}
       </div>
 
