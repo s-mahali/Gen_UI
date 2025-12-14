@@ -35,7 +35,7 @@ export default function App() {
   const debounceTimerRef = useRef<number | null>(null);
   const eventSourceRef = useRef<EventSource | null>(null);
   const isSearchingRef = useRef(false);
-  const baseUrl = import.meta.env.PROD ? "" : "http://localhost:5000"
+  const baseUrl = import.meta.env.PROD ? "https://gen-ui-9ux9.onrender.com" : "http://localhost:5000"
 
   //call healthcheck on every 14 min
   const fetchHealthCheck = async () => {
