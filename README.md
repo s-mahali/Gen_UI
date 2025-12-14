@@ -32,6 +32,8 @@ presented in a beautiful, interactive carousel interface.
 ---
 
 ## ✨ Features
+![screenshot 1](client/public/ss1.png)
+![screenshot 2](client/public/ss2.png)
 
 ### Core Capabilities
 - 🤖 **AI-Powered Timeline Generation** - Uses Google Gemini 2.5 Flash to analyze topics and generate comprehensive timelines
