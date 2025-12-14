@@ -7,7 +7,6 @@ const app = express();
 app.use(express.json());
 app.use(cors({
   origin : "http://localhost:5173",
-
 }));
 
 app.get("/health", (req, res) => {
@@ -31,9 +30,11 @@ app.post("/chat", async (req, res) => {
     }
     const result = await generateTimeline(query);    
     if (result) {
+      console.log("result", JSON.stringify(result, null, 2))
       return res.status(200).json({
         payload: result,
         message: result.type === "timeline" ? "✅ generated timeline successfully":"✅ response generated",
+        type: result.type === "timeline" ? "timeline" : "general",
         success: true,
       });
     } else {
