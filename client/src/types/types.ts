@@ -6,12 +6,9 @@ export type TimelineEvent = {
   description: string
   type: "historical" | "prediction"
   sentiment: "positive" | "negative" | "neutral"
-
   marketValue?: string
-
- 
   imageUrl?: {
-    url: string
+     url: string
   }
   impactScore?: number
   tags?: string[]

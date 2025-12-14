@@ -1,129 +1,190 @@
 import type { TimelineEvent } from "../types/types";
 
-const NOKIA_DATA: TimelineEvent[] = [
+const AI_DATA: TimelineEvent[] =  [
+      {
+        "id": "ai_1956_dartmouth",
+        "year": 1956,
+        "title": "Dartmouth Workshop: Birth of AI",
+        "description": "John McCarthy coined the term \"Artificial Intelligence\" and organized the Dartmouth Summer Research Project on Artificial Intelligence, marking the official inception of AI as a field of study.",
+        "type": "historical",
+        "sentiment": "positive",
+        "impactScore": 85,
+        "tags": [
+          "foundational",
+          "research",
+          "early AI",
+          "McCarthy"
+        ],
+        "imageUrl": {
+          "url": "https://www.sciencesetavenir.fr/assets/img/2024/12/19/cover-r4x3w1200-676441b6b1dc0-7607-424533-k2-k1-1017918-jpg.jpg"
+        },
+        "marketValue": "Not applicable (early academic phase)"
+      },
+      {
+        "id": "ai_1987_aiwinter",
+        "year": 1987,
+        "title": "Second AI Winter Begins",
+        "description": "Following overhyped expectations and the collapse of the Lisp machine market, funding for AI research significantly declined, leading to a period known as the \"AI Winter\" where interest waned.",
+        "type": "historical",
+        "sentiment": "negative",
+        "impactScore": 60,
+        "tags": [
+          "AI Winter",
+          "funding cuts",
+          "Lisp machines",
+          "research slowdown",
+          "overhype"
+        ],
+        "imageUrl": {
+          "url": "https://aitoolsexplorer.com/wp-content/uploads/2024/12/AI-winter.webp"
+        },
+        "marketValue": "Decline in AI-related tech companies and investments"
+      },
+      {
+        "id": "ai_1997_deepblue",
+        "year": 1997,
+        "title": "Deep Blue Defeats Garry Kasparov",
+        "description": "IBM's Deep Blue chess computer defeated reigning world champion Garry Kasparov in a six-game match, a landmark moment demonstrating AI's ability to excel in complex strategic tasks against human experts.",
+        "type": "historical",
+        "sentiment": "positive",
+        "impactScore": 90,
+        "tags": [
+          "chess",
+          "IBM",
+          "Deep Blue",
+          "game AI",
+          "Kasparov"
+        ],
+        "imageUrl": {
+          "url": "https://cdnph.upi.com/svc/sv/upi/2321715373877/2024/1/6a0429fa1ada13e8ae7f5558b9deaf88/On-This-Day-IBMs-Deep-Blue-beats-chess-legend-Kasparov.jpg"
+        },
+        "marketValue": "Increased interest and investment in computational power for AI"
+      },
+      {
+        "id": "ai_2012_imagenet",
+        "year": 2012,
+        "title": "ImageNet Moment: Deep Learning Breakthrough",
+        "description": "AlexNet, a deep convolutional neural network, significantly outperformed traditional methods in the ImageNet Large Scale Visual Recognition Challenge (ILSVRC), sparking the modern deep learning revolution and renewed AI interest.",   
+        "type": "historical",
+        "sentiment": "positive",
+        "impactScore": 95,
+        "tags": [
+          "deep learning",
+          "computer vision",
+          "neural networks",
+          "AlexNet",
+          "ImageNet"
+        ],
+        "imageUrl": {
+          "url": "https://cdn.sanity.io/images/vr8gru94/production/511d51bd1d1ec3b7155250bf7e53cfa6cb52f215-1339x503.png"        
+        },
+        "marketValue": "Surge in AI research investment, particularly in deep learning"
+      },
+      {
+        "id": "ai_2016_alphago",
+        "year": 2016,
+        "title": "AlphaGo Beats Lee Sedol in Go",
+        "description": "Google DeepMind's AlphaGo defeated world champion Go player Lee Sedol, a feat previously thought to be decades away due to Go's immense complexity, showcasing advanced reinforcement learning.",
+        "type": "historical",
+        "sentiment": "positive",
+        "impactScore": 92,
+        "tags": [
+          "Go",
+          "DeepMind",
+          "AlphaGo",
+          "reinforcement learning",
+          "Lee Sedol"
+        ],
+        "imageUrl": {
+          "url": "https://c8.alamy.com/compit/2n0479f/south-korean-professional-go-player-lee-sedol-puts-the-first-stone-against-googles-artificial-intelligence-program-alphago-during-the-second-match-of-the-google-deepmind-challenge-match-in-seoul-south-korea-thursday-march-10-2016-googles-computer-program-alphago-defeated-its-human-opponent-south-korean-go-champion-lee-sedol-on-wednesday-in-the-first-face-off-of-a-historic-five-game-match-ap-photo-lee-jin-man-2n0479f.jpg"
+        },
+        "marketValue": "Increased valuation for AI companies, particularly Google DeepMind"
+      },
+      {
+        "id": "ai_2022_chatgpt",
+        "year": 2022,
+        "title": "ChatGPT Public Launch",
+        "description": "OpenAI's ChatGPT was released to the public, quickly becoming a global phenomenon and demonstrating the incredible capabilities of large language models (LLMs) for natural language generation and interaction, ushering in the generative AI era.",
+        "type": "historical",
+        "sentiment": "positive",
+        "impactScore": 98,
+        "tags": [
+          "generative AI",
+          "LLM",
+          "ChatGPT",
+          "OpenAI",
+          "public adoption",
+          "AI assistant"
+        ],
+        "imageUrl": {
+          "url": "https://www.techradar.com/computing/artificial-intelligence/nothing-shows-how-far-chatgpts-images-have-come-than-two-pictures-generated-with-the-same-prompt-but-created-a-year-apart"
+        },
+        "marketValue": "Explosion in OpenAI valuation and massive investment in generative AI sector"
+      },
+      {
+        "id": "ai_2030_ubiquitous",
+        "year": 2030,
+        "title": "Ubiquitous AI Integration",
+        "description": "AI is expected to be deeply integrated into most aspects of daily life, from personalized health and education to autonomous vehicles and smart cities, driven by advancements in edge AI and specialized models, making it an invisible utility.",
+        "type": "prediction",
+        "sentiment": "positive",
+        "impactScore": 90,
+        "tags": [
+          "future",
+          "integration",
+          "smart cities",
+          "personalized AI",
+          "autonomous systems"
+        ],
+        "imageUrl": {
+          "url": "https://aiiot2023.org/images/2024/numbertracker/June/article_1_1.webp"
+        },
+        "marketValue": "Projected global AI market reaching several trillion dollars"
+      },
+      {
+        "id": "ai_2035_ethics_regulation",
+        "year": 2035,
+        "title": "Global AI Ethics and Regulatory Frameworks",
+        "description": "As AI becomes more powerful and pervasive, global efforts will intensify to establish robust ethical guidelines and regulatory frameworks to ensure responsible development, address bias, privacy, and accountability, and mitigate potential risks.",
+        "type": "prediction",
+        "sentiment": "neutral",
+        "impactScore": 80,
+        "tags": [
+          "future",
+          "ethics",
+          "regulation",
+          "governance",
+          "responsible AI",
+          "policy"
+        ],
+        "imageUrl": {
+          "url": "https://websocialsoftware.com/wp-content/uploads/2024/04/global-ai-governance-an-in-depth-overview-of-artificial-intelligence-regulations-worldwide.png"
+        },
+        "marketValue": "Growth in AI governance and compliance solutions market"
+      },
+      {
+        "id": "ai_2040_agi_progress",
+        "year": 2040,
+        "title": "Significant AGI Progress",
+        "description": "While full Artificial General Intelligence (AGI) remains a complex goal, significant breakthroughs are anticipated, potentially leading to AI systems capable of learning and applying intelligence across a wide range of tasks comparable to human cognitive abilities, if not surpassing them in specific domains.",
+        "type": "prediction",
+        "sentiment": "neutral",
+        "impactScore": 95,
+        "tags": [
+          "future",
+          "AGI",
+          "general intelligence",
+          "transformative AI",
+          "research frontier"
+        ],
+        "imageUrl": {
+          "url": "https://img.freepik.com/premium-photo/futuristic-artificial-intelligence-concept-with-glowing-digital-brain-computer-chip-showcasing-advanced-neural-network-machine-learning-technology-hightech-environment_860237-2624.jpg?w=2000"
+        },
+        "marketValue": "Potential for an unfathomable economic shift and new industries"
+      }
+    
+  
 
-  {
-    "id": "1",
-    "year": 1865,
-    "title": "Founding of Nokia Company",
-    "description": "Fredrik Idestam establishes a pulp mill near the Tammerkoski rapids in Finland, marking the very beginning of the Nokia story as an industrial conglomerate.",
-    "type": "historical",
-    "sentiment": "neutral",
-    "impactScore": 30,
-    "tags": ["founding", "industrial", "Finland"],
-    "imageUrl": {
-      "url": "https://image2.slideserve.com/4828065/the-nokia-story-l.jpg"
-    }
-  },
-  {
-    "id": "2",
-    "year": 1982,
-    "title": "Launch of Mobira Talkman",
-    "description": "Nokia introduces the Mobira Talkman, one of the world's first portable phones, weighing nearly 5kg. This marked Nokia's serious entry into mobile telecommunications.",
-    "type": "historical",
-    "sentiment": "positive",
-    "impactScore": 70,
-    "tags": ["mobile phone", "telecommunications", "innovation", "Mobira"],
-    "imageUrl": {
-      "url": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Mobira_Talkman.jpg"
-    }
-  },
-  {
-    "id": "3",
-    "year": 1998,
-    "title": "World's Largest Mobile Phone Manufacturer",
-    "description": "Nokia overtakes Motorola to become the world's largest mobile phone manufacturer, a position it would hold for over a decade, driven by iconic models and global expansion.",
-    "type": "historical",
-    "sentiment": "positive",
-    "impactScore": 90,
-    "tags": ["market leadership", "mobile phones", "global expansion", "GSM"],
-    "imageUrl": {
-      "url": "https://theshillongtimes.com/wp-content/uploads/2017/06/Nokia-3310.jpg"
-    }
-  },
-  {
-    "id": "4",
-    "year": 2007,
-    "title": "Failure to Adapt to Smartphone Revolution",
-    "description": "With the launch of the Apple iPhone, Nokia, relying heavily on its Symbian OS, failed to anticipate and adapt to the rapid shift towards touchscreen smartphones, beginning its market share decline.",
-    "type": "historical",
-    "sentiment": "negative",
-    "impactScore": 85,
-    "tags": ["smartphone revolution", "Symbian", "missed opportunity", "competition"],
-    "imageUrl": {
-      "url": "https://cdn.vox-cdn.com/thumbor/0vK0U2k2c2nYJx6k6t7Bf9oJ3U8=/0x0:3000x2000/1200x800/filters:focal(1260x760:1740x1240)/cdn.vox-cdn.com/uploads/chorus_image/image/71490202/iphone_2007.0.jpg"
-    }
-  },
-  {
-    "id": "5",
-    "year": 2013,
-    "title": "Sale of Devices & Services Division to Microsoft",
-    "description": "Nokia sells its mobile phone and devices division to Microsoft for approximately $7.2 billion, marking the end of its era as a direct mobile phone manufacturer.",
-    "type": "historical",
-    "sentiment": "negative",
-    "impactScore": 95,
-    "marketValue": "$7.2 billion",
-    "tags": ["acquisition", "Microsoft", "restructuring", "mobile devices"],
-    "imageUrl": {
-      "url": "https://imgv2-2-f.scribdassets.com/img/document/273449028/original/229e236afe/1?v=1"
-    }
-  },
-  {
-    "id": "6",
-    "year": 2016,
-    "title": "Nokia Brand Re-enters Smartphone Market (via HMD Global)",
-    "description": "Nokia licenses its brand name to HMD Global, allowing the production and sale of new Nokia-branded smartphones and feature phones running Android.",
-    "type": "historical",
-    "sentiment": "neutral",
-    "impactScore": 60,
-    "tags": ["brand licensing", "Android", "HMD Global", "comeback"],
-    "imageUrl": {
-      "url": "https://www.hmdglobal.com/static/media/phones.4e9d2f2a.jpg"
-    }
-  },
-  {
-    "id": "7",
-    "year": 2025,
-    "title": "Leading Global 5G & 6G Infrastructure Provider",
-    "description": "Nokia is expected to solidify its position as one of the top global providers of 5G and future 6G network infrastructure.",
-    "type": "prediction",
-    "sentiment": "positive",
-    "impactScore": 80,
-    "marketValue": "Growing",
-    "tags": ["5G", "6G", "network infrastructure", "telecoms", "future connectivity"],
-    "imageUrl": {
-      "url": "https://www.nokia.com/sites/default/files/2023-02/5g_network.jpg"
-    }
-  },
-  {
-    "id": "8",
-    "year": 2028,
-    "title": "Expansion in Industrial Private Wireless Networks",
-    "description": "Nokia will expand its footprint in private wireless networks for industrial and enterprise customers, enabling automation and digital transformation.",
-    "type": "prediction",
-    "sentiment": "positive",
-    "impactScore": 75,
-    "marketValue": "Growing segment",
-    "tags": ["private networks", "industry 4.0", "enterprise solutions", "automation"],
-    "imageUrl": {
-      "url": "https://www.nokia.com/sites/default/files/2022-06/private-wireless.jpg"
-    }
-  },
-  {
-    "id": "9",
-    "year": 2030,
-    "title": "Key Player in AI-Driven Network Optimization",
-    "description": "Nokia will leverage AI and machine learning to deliver advanced network optimization and automation integrated with IoT and cloud platforms.",
-    "type": "prediction",
-    "sentiment": "positive",
-    "impactScore": 70,
-    "marketValue": "High potential",
-    "tags": ["AI", "IoT", "network automation", "cloud solutions", "machine learning"],
-    "imageUrl": {
-      "url": "https://www.nokia.com/sites/default/files/2025-03/new-banner-1920x1080_v3.jpg?height=774&width=1376"
-    }
-  }
+]
 
-];
-
-export { NOKIA_DATA };
+export { AI_DATA };
